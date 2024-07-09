@@ -21,3 +21,30 @@ const pelatihan = {
   id_unit: "INT NOT NULL",
   id_sertifikat: "INT NOT NULL",
 };
+
+const lokasi = {
+  id: "INT PRIMARY KEY AUTOINCREMENT",
+  tempat: "VARCHAR(255)",
+  kota: "VARCHAR(255)",
+};
+
+const pelatihan_list = {
+  id: "INT PRIMARY KEY AUTOINCREMENT",
+  judul: "VARCHAR(255)",
+  kategori: "VARCHAR(255)",
+  sertifikasi: "VARCHAR(255)", // y, n
+};
+
+const sertifikat = {
+  id: "INT PRIMARY KEY AUTOINCREMENT",
+  status: "VARCHAR(255)",
+  pengirim: "VARCHAR(255)",
+  tgl_diterima: "DATE",
+  keterangan: "VARCHAR(255)",
+};
+
+const joined_perusahaan = {
+  id: "INT PRIMARY KEY AUTOINCREMENT",
+  id_pelatihan: "INT NOT NULL",
+  id_perusahaan: "INT NOT NULL",
+};
