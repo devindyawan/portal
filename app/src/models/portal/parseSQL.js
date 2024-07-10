@@ -1,4 +1,4 @@
-const { scheme, foreign_keys } = require("./scheme");
+const { scheme, foreign_keys, indexes } = require("./scheme");
 
 const parseToSQL = () => {
   let sql = [];
@@ -31,7 +31,18 @@ const parseToSQL = () => {
     sql.push(_sql);
   }
 
+  //   CREATE INDEX
+  for (const [indexName, value] of Object.entries(indexes)) {
+    for (const [table, attribute] of Object.entries(value)) {
+      let _sql = `ALTER TABLE ${table} ADD INDEX ${indexName}(${attribute})`;
+
+      sql.push(_sql);
+    }
+  }
+
   return sql;
 };
+
+console.log(parseToSQL());
 
 module.exports = { parseToSQL };

@@ -16,7 +16,7 @@ const scheme = {
     note_pic: "VARCHAR(255)",
     note_admin: "VARCHAR(255)",
     note_logistik: "VARCHAR(255)",
-    id_lokasi: "INT NOT NULL",
+    id_lokasi: "INT",
     id_pelatihan: "INT NOT NULL",
     id_unit: "INT NOT NULL",
     id_sertifikat: "INT NOT NULL",
@@ -189,4 +189,25 @@ const foreign_keys = {
   },
 };
 
-module.exports = { scheme, foreign_keys };
+const indexes = {
+  lokasi_kota_index: {
+    lokasi: "kota",
+  },
+  lokasi_tempat_index: {
+    lokasi: "tempat",
+  },
+  pelatihan_judul_index: {
+    pelatihan_list: "judul",
+  },
+  perusahaan_nama_index: {
+    perusahaan: "nama_perusahaan",
+  },
+  peserta_nama_index: {
+    peserta: "nama_peserta",
+  },
+  users_name_index: {
+    users: "fullname",
+  },
+};
+
+module.exports = { scheme, foreign_keys, indexes };
