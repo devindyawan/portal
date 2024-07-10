@@ -190,6 +190,9 @@ const foreign_keys = {
 };
 
 const indexes = {
+  peserta_nama_index: {
+    peserta: "nama_peserta",
+  },
   lokasi_kota_index: {
     lokasi: "kota",
   },
@@ -201,9 +204,6 @@ const indexes = {
   },
   perusahaan_nama_index: {
     perusahaan: "nama_perusahaan",
-  },
-  peserta_nama_index: {
-    peserta: "nama_peserta",
   },
   users_name_index: {
     users: "fullname",

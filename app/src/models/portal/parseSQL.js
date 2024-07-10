@@ -32,15 +32,17 @@ const parseToSQL = () => {
   }
 
   //   CREATE INDEX
+  let sqlIndex = []
+
   for (const [indexName, value] of Object.entries(indexes)) {
     for (const [table, attribute] of Object.entries(value)) {
       let _sql = `ALTER TABLE ${table} ADD INDEX ${indexName}(${attribute})`;
 
-      sql.push(_sql);
+      sqlIndex.push(_sql);
     }
   }
 
-  return sql;
+  return { sql, sqlIndex };
 };
 
 console.log(parseToSQL());
