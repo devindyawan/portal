@@ -21,68 +21,76 @@ const migrateClassData = async () => {
 
   for (let index = 0; index < data.length; index++) {
     const { data_perusahaan } = data[index];
+
+    if (data_perusahaan === null || data_perusahaan === undefined) continue
+
     // if (index === 20) break;
 
-    if (data[index].id === "13660") {
-      const perus = JSON.parse(data_perusahaan ?? "[]");
-      const migratePesertaPerusahaan = async (perus) => {
-        let idPerusahaan = [];
-        let idPeserta = [];
+    const perus = JSON.parse(data_perusahaan);
+    const migratePesertaPerusahaan = async (perus) => {
+      let idPerusahaan = [];
+      let idPeserta = [];
 
-        for (const perusahaanIteration of perus) {
-          // set perusahaan
-          perusahaan.nama_perusahaan = perusahaanIteration.perusahaan;
-          const resultPerusahaan = await insertPerusahaan(perusahaan);
+      for (const perusahaanIteration of perus) {
+        // set perusahaan
+        perusahaan.nama_perusahaan = perusahaanIteration.perusahaan;
+        const resultPerusahaan = await insertPerusahaan(perusahaan);
 
-          idPerusahaan.push(resultPerusahaan.insertId);
+        idPerusahaan.push(resultPerusahaan.insertId);
 
-          // iterasi peserta
-          for (const pesertaItaration of perusahaanIteration.peserta) {
-            peserta.push({
-              nama_peserta: pesertaItaration.nama,
-              no_telp: pesertaItaration.telp,
-              email: pesertaItaration.email,
-              hari_kedatangan:
-                pesertaItaration.tgl_penjemputan === "0000-00-00 00:00:00"
-                  ? ""
-                  : pesertaItaration.tgl_penjemputan,
-              penerbangan: pesertaItaration.penerbangan,
-              penginapan: pesertaItaration.penginapan,
-              transport: pesertaItaration.transportasi,
-              keterangan: pesertaItaration.keterangan,
-            });
-          }
+        // iterasi peserta
+        let arrayOfPeserta = perusahaanIteration.peserta ?? []
 
-          const resultPeserta = await insertPeserta(
-            peserta,
-            resultPerusahaan.insertId
-          );
-
-          if (resultPeserta.affectedRows !== 1) {
-            for (
-              let index = resultPeserta.insertId;
-              index < resultPeserta.insertId + resultPeserta.affectedRows;
-              index++
-            ) {
-              idPeserta.push(index);
-            }
-          } else {
-            idPeserta.push(resultPeserta.insertId);
-          }
-
-          // reset
-          peserta = [];
+        for (const pesertaItaration of arrayOfPeserta) {
+          peserta.push({
+            nama_peserta: pesertaItaration.nama,
+            no_telp: pesertaItaration.telp,
+            email: pesertaItaration.email,
+            hari_kedatangan:
+              pesertaItaration.tgl_penjemputan === "0000-00-00 00:00:00"
+                ? ""
+                : pesertaItaration.tgl_penjemputan,
+            penerbangan: pesertaItaration.penerbangan,
+            penginapan: pesertaItaration.penginapan,
+            transport: pesertaItaration.transportasi,
+            keterangan: pesertaItaration.ket,
+          });
         }
 
-        //   ID Peserta and ID Perusahaan
-        return {
-          idPerusahaan,
-          idPeserta,
-        };
+        const resultPeserta = await insertPeserta(
+          peserta,
+          resultPerusahaan.insertId
+        );
+
+        if (resultPeserta.affectedRows !== 1) {
+          for (
+            let index = resultPeserta.insertId;
+            index < resultPeserta.insertId + resultPeserta.affectedRows;
+            index++
+          ) {
+            idPeserta.push(index);
+          }
+        } else {
+          idPeserta.push(resultPeserta.insertId);
+        }
+
+        // reset
+        peserta = [];
+      }
+
+      //   ID Peserta and ID Perusahaan
+      return {
+        idPerusahaan,
+        idPeserta,
       };
 
-      console.log(data[index]);
-    }
+    };
+
+    // idPerusahaan and idPeserta
+    // let result = await migratePesertaPerusahaan(perus)
+
+    console.log(result)
+
   }
 };
 
@@ -135,5 +143,4 @@ const migrationUnitData = async () => {
 };
 
 migrateClassData();
-// migrateUserData();
-// migrationUnitData();
+// migrationUnitData().then(migrateUserData());
