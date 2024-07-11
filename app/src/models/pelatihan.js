@@ -2,6 +2,8 @@ const {
   requestToDb,
   checkArgument,
   dateFormatInObject,
+  useInsertTable,
+  useUpdateTable,
 } = require("./hooks/hooks.js");
 const {} = require("./lokasi.js");
 
@@ -28,7 +30,7 @@ const pelatihan = {
   id_sertifikat: "",
 };
 
-const insertPelatihan = async ({
+async function insertPelatihan({
   jenis = "",
   jumlah_peserta = "",
   status = "",
@@ -37,7 +39,7 @@ const insertPelatihan = async ({
   tanggal_mulai = "",
   tanggal_selesai = "",
   waktu_mulai = "",
-  metode = "offline",
+  metode = "",
   instruktur = "",
   note_kaUnit = "",
   note_accounting = "",
@@ -48,52 +50,9 @@ const insertPelatihan = async ({
   id_pelatihan = 0,
   id_unit = 0,
   id_sertifikat = 0,
-}) => {
-  const _sql = `INSERT INTO pelatihan (
-    jenis,
-    jumlah_peserta,
-    anggota_peserta,
-    status,
-    fasilitas,
-    pic,
-    tanggal_mulai,
-    tanggal_selesai,
-    waktu_mulai,
-    metode,
-    instruktur,
-    note_kaUnit,
-    note_accounting,
-    note_pic,
-    note_admin,
-    note_logistik,
-    id_lokasi,
-    id_pelatihan,
-    id_unit,
-    id_sertifikat
-  ) VALUES (
-    '${jenis}',
-    '${jumlah_peserta}'
-    '${anggota_peserta}',
-    '${status}',
-    '${fasilitas}',
-    '${pic}',
-    '${tanggal_mulai}',
-    '${tanggal_selesai}',
-    '${waktu_mulai}',
-    '${metode}',
-    '${instruktur}',
-    '${note_kaUnit}',
-    '${note_accounting}',
-    '${note_pic}',
-    '${note_admin}',
-    '${note_logistik}',
-    ${id_lokasi},
-    ${id_pelatihan},
-    ${id_unit},
-    ${id_sertifikat});`;
-
-  return await requestToDb(_sql);
-};
+}) {
+  return useInsertTable("pelatihan", arguments);
+}
 
 const getPelatihan = async () => {
   const _sql = `SELECT * FROM pelatihan;`;
@@ -139,32 +98,21 @@ async function updatePelatihan({
 }) {
   if (id === 0) return;
 
-  const result = await getPelatihanById(id);
-  if (result.length === 0) return;
-
-  const newArgs = checkArgument(arguments, result);
-
-  const _sql = `UPDATE pelatihan SET
-    jenis = '${newArgs.jenis}',
-    jumlah_peserta = '${newArgs.jumlah_peserta}',
-    anggota_peserta = '${newArgs.anggota_peserta}',
-    status = '${newArgs.status}',
-    fasilitas = '${newArgs.fasilitas}',
-    pic = '${newArgs.pic}',
-    tanggal_mulai = '${newArgs.tanggal_mulai}',
-    tanggal_selesai = '${newArgs.tanggal_selesai}',
-    waktu_mulai = '${newArgs.waktu_mulai}',
-    metode = '${newArgs.metode}',
-    instruktur = '${newArgs.instruktur}',
-    note_kaUnit = '${newArgs.note_kaUnit}',
-    note_accounting = '${newArgs.note_accounting}',
-    note_pic = '${newArgs.note_pic}',
-    note_admin = '${newArgs.note_admin}',
-    note_logistik = '${newArgs.note_logistik}',
-    id_lokasi = ${newArgs.id_lokasi},
-    id_pelatihan = ${newArgs.id_pelatihan},
-    id_unit = ${newArgs.id_unit},
-    id_sertifikat = ${newArgs.id_sertifikat} WHERE id = ${id};`;
+  return useUpdateTable("pelatihan", arguments);
 }
 
-const deletePelatihan = async (id = 0) => {};
+const deletePelatihan = async (id = 0) => {
+  if (id === 0) return;
+
+  const _sql = `DELETE FROM pelatihan WHERE id = ${id};`;
+
+  return await requestToDb(_sql);
+};
+
+module.exports = {
+  insertPelatihan,
+  getPelatihan,
+  getPelatihanById,
+  updatePelatihan,
+  deletePelatihan,
+};

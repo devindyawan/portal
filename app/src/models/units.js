@@ -1,10 +1,8 @@
-const { requestToDb } = require("./hooks/hooks.js");
+const { requestToDb, useInsertTable } = require("./hooks/hooks.js");
 
-const insertUnits = async ({ name = "" }) => {
-  const _sql = `INSERT INTO units (name) VALUES ('${name}');`;
-
-  return await requestToDb(_sql);
-};
+async function insertUnits({ id = 0, name = "" }) {
+  return useInsertTable("units", arguments);
+}
 
 const getUnits = async () => {
   const _sql = `SELECT * FROM units;`;
@@ -20,22 +18,14 @@ const getUnitsById = async (id = 0) => {
   return await requestToDb(_sql);
 };
 
-const updateUnit = async ({ id = 0, name = "" }) => {
+async function updateUnit({ id = 0, name = "" }) {
   if (id === 0) return;
 
-  const result = await getUnitsById(id);
-  if (result.length === 0) return;
-
-  const _sql = `UPDATE units SET name = '${name}' WHERE id = ${id};`;
-
-  return await requestToDb(_sql);
-};
+  return useUpdateTable("units", arguments);
+}
 
 const deleteUnits = async (id = 0) => {
   if (id === 0) return;
-
-  const result = await getUnitsById(id);
-  if (result.length === 0) return;
 
   const _sql = `DELETE FROM units WHERE id = ${id};`;
 

@@ -2,13 +2,12 @@ const scheme = {
   pelatihan: {
     id: "INT PRIMARY KEY AUTO_INCREMENT",
     jenis: "VARCHAR(255) NOT NULL", // public, iht
-    jumlah_peserta: "INT NOT NULL",
+    jumlah_peserta: "INT",
     status: "VARCHAR(255) NOT NULL", //permintaan, fix
     fasilitas: "VARCHAR(255)",
     pic: "VARCHAR(255)",
-    tanggal_mulai: "DATE NOT NULL",
-    tanggal_selesai: "DATE NOT NULL",
-    waktu_mulai: "TIME NOT NULL",
+    tanggal_mulai: "DATETIME NOT NULL",
+    tanggal_selesai: "DATETIME NOT NULL",
     metode: "VARCHAR(255) NOT NULL", //online, offline
     instruktur: "VARCHAR(255)",
     note_kaUnit: "VARCHAR(255)",
@@ -47,6 +46,7 @@ const scheme = {
     id: "INT PRIMARY KEY AUTO_INCREMENT",
     id_pelatihan: "INT NOT NULL",
     id_perusahaan: "INT NOT NULL",
+    jumlah_peserta: "INT",
   },
 
   perusahaan: {
@@ -60,12 +60,14 @@ const scheme = {
   peserta: {
     id: "INT PRIMARY KEY AUTO_INCREMENT",
     nama_peserta: "VARCHAR(255) NOT NULL",
+    jabatan: "VARCHAR(255) DEFAULT ''",
     no_telp: "VARCHAR(255) NOT NULL DEFAULT ''",
     email: "VARCHAR(255) NOT NULL DEFAULT ''",
-    hari_kedatangan: "DATE",
+    hari_kedatangan: "DATETIME",
     penerbangan: "VARCHAR(255) DEFAULT ''",
     penginapan: "VARCHAR(255) DEFAULT ''",
     transport: "VARCHAR(255) DEFAULT ''",
+    keterangan: "VARCHAR(255) DEFAULT ''",
     id_perusahaan: "INT NOT NULL",
   },
 
@@ -78,7 +80,7 @@ const scheme = {
 
   invoice: {
     id: "INT PRIMARY KEY AUTO_INCREMENT",
-    nomor_invoice: "VARCHAR(255) NOT NULL",
+    nomor_invoice: "VARCHAR(255) NOT NULL DEFAULT ''",
     harga: "INT",
     pajak: "VARCHAR(255) DEFAULT ''",
     konf_pajak: "VARCHAR(255) DEFAULT ''",
@@ -202,11 +204,14 @@ const indexes = {
   pelatihan_judul_index: {
     pelatihan_list: "judul",
   },
-  perusahaan_nama_index: {
-    perusahaan: "nama_perusahaan",
-  },
   users_name_index: {
     users: "fullname",
+  },
+  users_username_index: {
+    users: "username",
+  },
+  perusahaan_nama_index: {
+    perusahaan: "nama_perusahaan",
   },
 };
 

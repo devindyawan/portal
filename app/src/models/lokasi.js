@@ -1,10 +1,8 @@
-const { requestToDb } = require("./hooks/hooks.js");
+const { requestToDb, useInsertTable } = require("./hooks/hooks.js");
 
-const insertLokasi = async ({ tempat = "", kota = "" }) => {
-  const _sql = `INSERT INTO lokasi (tempat, kota) VALUES ('${tempat}', '${kota}');`;
-
-  return await requestToDb(_sql);
-};
+async function insertLokasi({ tempat = "", kota = "" }) {
+  return useInsertTable("lokasi", arguments);
+}
 
 const getLokasi = async () => {
   const _sql = `SELECT * FROM lokasi;`;
@@ -20,22 +18,14 @@ const getLokasiById = async (id = 0) => {
   return await requestToDb(_sql);
 };
 
-const updateLokasi = async ({ id = 0, tempat = "", kota = "" }) => {
+async function updateLokasi({ id = 0, tempat = "", kota = "" }) {
   if (id === 0) return;
 
-  const result = await getLokasiById(id);
-  if (result.length === 0) return;
-
-  const _sql = `UPDATE lokasi SET tempat = '${tempat}', kota = '${kota}' WHERE id = ${id};`;
-
-  return await requestToDb(_sql);
-};
+  return useUpdateTable("lokasi", arguments);
+}
 
 const deleteLokasi = async (id = 0) => {
   if (id === 0) return;
-
-  const result = await getLokasiById(id);
-  if (result.length === 0) return;
 
   const _sql = `DELETE FROM lokasi WHERE id = ${id};`;
 

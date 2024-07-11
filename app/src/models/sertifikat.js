@@ -1,4 +1,8 @@
-const { requestToDb } = require("./hooks/hooks.js");
+const {
+  requestToDb,
+  useInsertTable,
+  useUpdateTable,
+} = require("./hooks/hooks.js");
 
 const sertifikat = {
   id: "",
@@ -8,16 +12,14 @@ const sertifikat = {
   keterangan: "",
 };
 
-const insertSertifikat = async ({
+async function insertSertifikat({
   status = "",
   pengirim = "",
   tgl_diterima = "",
   keterangan = "",
-}) => {
-  const _sql = `INSERT INTO sertifikat (status, pengirim, tgl_diterima, keterangan) VALUES ('${status}', '${pengirim}', '${tgl_diterima}', '${keterangan}');`;
-
-  return await requestToDb(_sql);
-};
+}) {
+  return useInsertTable("sertifikat", arguments);
+}
 
 const getSertifikat = async () => {
   const _sql = `SELECT * FROM sertifikat;`;
@@ -33,28 +35,20 @@ const getSertifikatById = async (id = 0) => {
   return await requestToDb(_sql);
 };
 
-const updateSertifikat = async ({
+async function updateSertifikat({
   id = 0,
   status = "",
   pengirim = "",
   tgl_diterima = "",
   keterangan = "",
-}) => {
+}) {
   if (id === 0) return;
 
-  const result = await getSertifikatById(id);
-  if (result.length === 0) return;
-
-  const _sql = `UPDATE sertifikat SET status = '${status}', pengirim = '${pengirim}', tgl_diterima = '${tgl_diterima}', keterangan = '${keterangan}' WHERE id = ${id};`;
-
-  return await requestToDb(_sql);
-};
+  return useUpdateTable("sertifikat", arguments);
+}
 
 const deleteSertifikat = async (id = 0) => {
   if (id === 0) return;
-
-  const result = await getSertifikatById(id);
-  if (result.length === 0) return;
 
   const _sql = `DELETE FROM sertifikat WHERE id = ${id};`;
 

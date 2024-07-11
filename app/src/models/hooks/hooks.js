@@ -1,5 +1,4 @@
 const { connection } = require("../../config/database.js");
-const moment = require("moment");
 
 const requestToDb = async (sql) => {
   try {
@@ -7,25 +6,41 @@ const requestToDb = async (sql) => {
 
     return result;
   } catch (error) {
-    return error;
+    return {
+      code: error.code,
+      sqlMessage: error.sqlMessage,
+      sql: error.sql,
+    };
   }
 };
 
-function checkArgument(arguments, result) {
-  //   get arguments function
-  const args = arguments[0];
+const useUpdateTable = async (table, arguments) => {
+  delete arguments[0].id;
 
-  //   check if args is empty
-  for (const [key, value] of Object.entries(result[0])) {
-    if (key === "id") continue;
+  const setData = Object.keys({ ...arguments[0] })
+    .map((key) => `${key} = '${arguments[0][key]}'`)
+    .join(", ");
 
-    if (args[key] !== undefined) {
-      result[0][key] = args[key];
-    }
+  const _sql = `UPDATE ${table} SET ${setData} WHERE id = ${id};`;
+
+  return await requestToDb(_sql);
+};
+
+const useInsertTable = async (table, arguments) => {
+  let attributes = [];
+  let values = [];
+
+  for (const [attribute, value] of Object.entries(arguments[0])) {
+    attributes.push(attribute);
+    values.push(Number.isInteger(value) ? `${value}` : `'${value}'`);
   }
 
-  return result[0];
-}
+  const _sql = `INSERT INTO ${table} (${attributes.join(
+    ", "
+  )}) VALUES (${values.join(", ")});`;
+
+  return await requestToDb(_sql);
+};
 
 const dateFormatInObject = (data, result) => {
   for (const [key, value] of Object.entries(result[0])) {
@@ -39,4 +54,9 @@ const dateFormatInObject = (data, result) => {
   }
 };
 
-module.exports = { requestToDb, checkArgument, dateFormatInObject };
+module.exports = {
+  requestToDb,
+  useUpdateTable,
+  useInsertTable,
+  dateFormatInObject,
+};

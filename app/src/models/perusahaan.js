@@ -1,15 +1,17 @@
-const { requestToDb } = require("./hooks/hooks.js");
+const {
+  requestToDb,
+  useInsertTable,
+  useUpdateTable,
+} = require("./hooks/hooks.js");
 
-const insertPerusahaan = async ({
+async function insertPerusahaan({
   nama_perusahaan = "",
   no_telp = "",
   email = "",
   alamat = "",
-}) => {
-  const _sql = `INSERT INTO perusahaan (nama_perusahaan, no_telp, email, alamat) VALUES ('${nama_perusahaan}', '${no_telp}', '${email}', '${alamat}');`;
-
-  return await requestToDb(_sql);
-};
+}) {
+  return useInsertTable("perusahaan", arguments);
+}
 
 const getPerusahaan = async () => {
   const _sql = `SELECT * FROM perusahaan;`;
@@ -25,28 +27,20 @@ const getPerusahaanById = async (id = 0) => {
   return await requestToDb(_sql);
 };
 
-const updatePerusahaan = async ({
+async function updatePerusahaan({
   id = 0,
   nama_perusahaan = "",
   no_telp = "",
   email = "",
   alamat = "",
-}) => {
+}) {
   if (id === 0) return;
 
-  const result = await getPerusahaansById(id);
-  if (result.length === 0) return;
-
-  const _sql = `UPDATE perusahaan SET nama_perusahaan = '${nama_perusahaan}', no_telp = '${no_telp}', email = '${email}', alamat = '${alamat}' WHERE id = ${id};`;
-
-  return await requestToDb(_sql);
-};
+  return useUpdateTable("perusahaan", arguments);
+}
 
 const deletePerusahaan = async (id = 0) => {
   if (id === 0) return;
-
-  const result = await getPerusahaansById(id);
-  if (result.length === 0) return;
 
   const _sql = `DELETE FROM perusahaan WHERE id = ${id};`;
 

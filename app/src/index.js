@@ -1,36 +1,39 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const { connection } = require("./config/database.js");
 
-const {
-  getPelatihanList,
-  getPelatihanListById,
-  deletePelatihanList,
-  updatePelatihanList,
-  insertPelatihanList,
-} = require("./models/pelatihanList.js");
-const { getPerusahaanById } = require("./models/perusahaan.js");
-const { updatePeserta, insertPeserta } = require("./models/peserta.js");
+const pelatihanRouter = require("./routers/pelatihan");
 
 const app = express();
 dotenv.config();
+app.use(express.json());
 
 const PORT = process.env.PORT;
 
-const lokasi = {
-  tempat: "Hotel Malang",
-  kota: "Batu",
-};
+app.use("/portal/api/pelatihan", pelatihanRouter);
 
-updatePeserta({
-  id: 1,
-  nama_peserta: "Budi",
-  penerbangan: "akeh",
-  hari_kedatangan: "2025-05-02",
-  id_perusahaan: 6,
-}).then((result) => {
-  console.log(result);
-});
+// const lokasi = {
+//   tempat: "Hotel Malang",
+//   kota: "Batu",
+// };
+
+// const newPeserta = {
+//   nama_peserta: "Wahyono",
+//   no_telp: "546546",
+//   email: "aksdghaksjd@gmail.com",
+//   hari_kedatangan: "2023-03-10",
+//   penerbangan: "jauh",
+//   penginapan: "",
+//   transport: "",
+//   id_perusahaan: 6,
+// };
+
+// insertPeserta(newPeserta).then((result) => {
+//   console.log(result);
+// });
+
+// updatePeserta(newPeserta).then((result) => {
+//   console.log(result);
+// });
 
 // insertPeserta();
 
@@ -38,7 +41,7 @@ updatePeserta({
 //   console.log(result);
 // });
 
-// deleteLokasi(3).then((result) => {
+// deletePeserta(10).then((result) => {
 //   console.log(result);
 // });
 

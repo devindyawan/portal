@@ -1,0 +1,69 @@
+###
+GET http://localhost:4000/portal/api/pelatihan
+
+###
+POST http://localhost:4000/portal/api/pelatihan
+Content-Type: application/json
+
+{
+    
+    "lokasi": {
+        "tempat": "Hotel Saanjaya",
+        "kota": "Jogja"
+    },
+    "pelatihan_detail": {
+        "judul": "Sertifikasi Aduk Semen",
+        "kategori": "BNSP",
+        "sertifikasi": "y"
+    },
+    "peserta_perusahaan": [
+        {
+            "perusahaan": {
+                "nama_perusahaan": "CV BUMI MAJU TERUS",
+                "no_telp": "9726481724",
+                "email": "cvbumimaju@gmail.com",
+                "alamat": "jalan pegangsaan timur no 15"
+            },
+            "peserta":[
+                {
+                    "nama_peserta": "Wangsit",
+                    "no_telp": "0285465456",
+                    "email": "asdh@gmail.com",
+                    "hari_kedatangan": "2025-03-03",
+                    "penerbangan": "akeaklsdh"
+                }, 
+                {
+                    "nama_peserta": "Murjiono",
+                    "no_telp": "0285465456askdjas",
+                    "email": "asdh@gmail.com",
+                    "hari_kedatangan": "2035-03-03",
+                    "penerbangan": "akeh jan"
+                }
+            ]
+        },
+        {
+            "perusahaan": {
+                "nama_perusahaan": "CV BUMI BERSINAR",
+                "no_telp": "9726481724123123",
+                "email": "cvbumimaju@gmail.com",
+                "alamat": "jalan pegangsaan barat no 95"
+            },
+            "peserta":[
+                {
+                    "nama_peserta": "Romo",
+                    "no_telp": "0285465456",
+                    "email": "asdh@gmail.com",
+                    "hari_kedatangan": "2024-03-03",
+                    "penerbangan": "akeaklsdasdasdh"
+                }, 
+                {
+                    "nama_peserta": "Santi",
+                    "no_telp": "0285465456akdjas",
+                    "email": "asdh@gmail.com",
+                    "hari_kedatangan": "2055-03-03",
+                    "penerbangan": "akeh janasd"
+                }
+            ]
+        }
+    ]
+}

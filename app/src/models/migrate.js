@@ -2,21 +2,23 @@ const { connection } = require("../config/database.js");
 const { parseToSQL } = require("./portal/parseSQL");
 
 const migrate = async () => {
-  const { sql, sqlIndex } = parseToSQL();
+  const { sql } = parseToSQL();
 
   sql.forEach(async (element, index) => {
     const [result, fields] = await connection.query(element);
     console.log(result);
   });
 
-  setTimeout(() => {
-    sqlIndex.forEach(async (element) => {
-      const [result, fields] = await connection.query(element);
-      console.log(result);
-    });
-  }, 10000)
-
   return;
 };
 
-migrate();
+const setIndex = async () => {
+  const { sqlIndex } = parseToSQL();
+
+  sqlIndex.forEach(async (element) => {
+    const [result, fields] = await connection.query(element);
+    console.log(result);
+  });
+};
+
+migrate().then(setIndex());
