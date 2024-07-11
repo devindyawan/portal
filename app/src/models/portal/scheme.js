@@ -15,6 +15,7 @@ const scheme = {
     note_pic: "VARCHAR(255)",
     note_admin: "VARCHAR(255)",
     note_logistik: "VARCHAR(255)",
+    aktif: "VARCHAR(255) NOT NULL",
     id_lokasi: "INT",
     id_pelatihan: "INT NOT NULL",
     id_unit: "INT NOT NULL",

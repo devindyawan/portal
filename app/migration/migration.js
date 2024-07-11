@@ -24,9 +24,8 @@ const migrateClassData = async () => {
     // if (index === 20) break;
 
     if (data[index].id === "13660") {
-      const migratePesertaPerusahaan = async () => {
-        const perus = JSON.parse(data_perusahaan ?? "[]");
-
+      const perus = JSON.parse(data_perusahaan ?? "[]");
+      const migratePesertaPerusahaan = async (perus) => {
         let idPerusahaan = [];
         let idPeserta = [];
 
@@ -81,6 +80,8 @@ const migrateClassData = async () => {
           idPeserta,
         };
       };
+
+      console.log(data[index]);
     }
   }
 };
